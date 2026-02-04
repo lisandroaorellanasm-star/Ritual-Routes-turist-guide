@@ -347,14 +347,14 @@ const App: React.FC = () => {
             <main className="flex-grow container mx-auto p-4 md:p-6 lg:p-8 flex flex-col">
                 {error && (
                     <div className="fixed top-24 left-1/2 transform -translate-x-1/2 w-[90%] max-w-2xl z-[100] animate-bounce-in">
-                        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-2xl flex justify-between items-center">
-                            <div className="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-2xl flex justify-between items-start">
+                            <div className="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span className="font-bold">{error}</span>
+                                <span className="font-bold whitespace-pre-line text-sm">{error}</span>
                             </div>
-                            <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600">
+                            <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600 flex-shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                                 </svg>

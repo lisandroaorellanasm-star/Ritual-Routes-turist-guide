@@ -140,11 +140,36 @@ Your response MUST be a single, valid JSON object following this structure:
         } : undefined,
     };
 
-    const response: GenerateContentResponse = await ai.models.generateContent({
-        model: modelName,
-        contents: prompt,
-        config: config
-    });
+    let response: GenerateContentResponse;
+
+    try {
+        response = await ai.models.generateContent({
+            model: modelName,
+            contents: prompt,
+            config: config
+        });
+    } catch (error: any) {
+        // Handle quota exhausted errors with helpful message
+        if (error.message && error.message.includes('429')) {
+            throw new Error(
+                'API quota exceeded. Please:\n' +
+                '1. Create a new API key at aistudio.google.com/app/apikey\n' +
+                '2. Update VITE_GEMINI_API_KEY in Vercel\n' +
+                '3. Redeploy your application\n\n' +
+                'Or wait a few minutes for quota to reset.'
+            );
+        }
+
+        // Handle model not found errors
+        if (error.message && error.message.includes('404')) {
+            throw new Error(
+                `Model "${modelName}" not available. Your API key may not have access to this model.`
+            );
+        }
+
+        // Re-throw other errors
+        throw error;
+    }
 
     const jsonText = extractJson(response.text);
     const itinerary: Itinerary = JSON.parse(jsonText);
