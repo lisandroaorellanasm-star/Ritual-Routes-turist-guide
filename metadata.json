@@ -1,0 +1,8 @@
+{
+  "name": "Ritual Routes: AI Tourist Guide",
+  "description": "An interactive tourist guide that helps travelers explore destinations through AI-generated itineraries and ceremonial storytelling. The app combines maps, search data, conversational AI, and a real-time voice agent to create personalized routes enriched with local narratives and cultural insights.",
+  "requestFramePermissions": [
+    "geolocation",
+    "microphone"
+  ]
+}
