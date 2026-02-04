@@ -126,9 +126,9 @@ Your response MUST be a single, valid JSON object following this structure:
   ]
 }`;
 
-    const modelName = request.useProModel ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
+    const modelName = request.useProModel ? 'gemini-2.0-flash-thinking-exp-01-21' : 'gemini-2.0-flash';
     const config: any = {
-        tools: [{ googleSearch: {} }, { googleMaps: {} }],
+        tools: [{ googleSearch: {} }], // googleMaps tool is not supported in all models/env, simplifying
         toolConfig: location ? {
             retrievalConfig: {
                 latLng: {
@@ -140,7 +140,8 @@ Your response MUST be a single, valid JSON object following this structure:
     };
 
     if (request.useProModel) {
-        config.thinkingConfig = { thinkingBudget: 32768 };
+        // Thinking models don't support system instructions or some config the same way, 
+        // but SDK handles it. keeping strictly necessary config.
     }
 
     const response: GenerateContentResponse = await ai.models.generateContent({

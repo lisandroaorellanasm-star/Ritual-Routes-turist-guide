@@ -118,7 +118,8 @@ const App: React.FC = () => {
             if (err.message && err.message.includes("API Key")) {
                 setError(err.message);
             } else {
-                setError(t.errorGenerateItinerary);
+                // Show the actual error message for debugging purposes
+                setError(`${t.errorGenerateItinerary} (${err.message})`);
             }
         } finally {
             setIsLoading(false);
