@@ -113,9 +113,13 @@ const App: React.FC = () => {
             const initialMessage: ChatMessage = { role: 'model', content: t.initialChatMessage };
             setChatHistory([initialMessage]);
             setView(View.ITINERARY);
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            setError(t.errorGenerateItinerary);
+            if (err.message && err.message.includes("API Key")) {
+                setError(err.message);
+            } else {
+                setError(t.errorGenerateItinerary);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -165,7 +169,9 @@ const App: React.FC = () => {
             setView(View.VOICE_AGENT);
             setTranscriptions([]);
 
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
+            if (!apiKey) throw new Error("API Key is missing for Voice Agent");
+            const ai = new GoogleGenAI({ apiKey });
             const outputAudioContext = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
             let nextStartTime = 0;
             const sources = new Set<AudioBufferSourceNode>();
