@@ -126,9 +126,10 @@ Your response MUST be a single, valid JSON object following this structure:
   ]
 }`;
 
-    const modelName = request.useProModel ? 'gemini-2.0-flash-thinking-exp-01-21' : 'gemini-2.0-flash';
+    // Use stable models to avoid 404 errors with experimental versions
+    const modelName = request.useProModel ? 'gemini-1.5-pro' : 'gemini-2.0-flash';
     const config: any = {
-        tools: [{ googleSearch: {} }], // googleMaps tool is not supported in all models/env, simplifying
+        tools: [{ googleSearch: {} }],
         toolConfig: location ? {
             retrievalConfig: {
                 latLng: {
@@ -139,9 +140,9 @@ Your response MUST be a single, valid JSON object following this structure:
         } : undefined,
     };
 
+    // Remove experimental thinking config to ensure stability
     if (request.useProModel) {
-        // Thinking models don't support system instructions or some config the same way, 
-        // but SDK handles it. keeping strictly necessary config.
+        // gemini-1.5-pro supports standard config
     }
 
     const response: GenerateContentResponse = await ai.models.generateContent({
