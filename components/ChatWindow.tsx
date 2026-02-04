@@ -70,7 +70,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage,
             setTranscriptionError(null);
             transcriptionSegmentRef.current = '';
 
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY as string });
 
             sessionPromiseRef.current = ai.live.connect({
                 model: 'gemini-2.5-flash-native-audio-preview-09-2025',

@@ -3,7 +3,7 @@ import { GoogleGenAI, Chat, GenerateContentResponse, Type } from '@google/genai'
 import { Geolocation, Itinerary, GroundingChunk, Language, ItineraryRequest, Stop } from '../types';
 import { translations } from '../translations';
 
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+const getAI = () => new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY as string });
 
 const extractJson = (text: string): string => {
     const match = text.match(/```json\s*([\s\S]*?)\s*```/);
