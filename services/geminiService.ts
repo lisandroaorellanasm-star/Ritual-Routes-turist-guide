@@ -126,8 +126,8 @@ Your response MUST be a single, valid JSON object following this structure:
   ]
 }`;
 
-    // Use stable models to avoid 404 errors with experimental versions
-    const modelName = request.useProModel ? 'gemini-1.5-pro' : 'gemini-2.0-flash';
+    // Use only gemini-2.0-flash for maximum API compatibility
+    const modelName = 'gemini-2.0-flash';
     const config: any = {
         tools: [{ googleSearch: {} }],
         toolConfig: location ? {
@@ -139,11 +139,6 @@ Your response MUST be a single, valid JSON object following this structure:
             },
         } : undefined,
     };
-
-    // Remove experimental thinking config to ensure stability
-    if (request.useProModel) {
-        // gemini-1.5-pro supports standard config
-    }
 
     const response: GenerateContentResponse = await ai.models.generateContent({
         model: modelName,
