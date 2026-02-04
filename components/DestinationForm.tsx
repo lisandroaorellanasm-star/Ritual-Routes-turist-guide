@@ -50,11 +50,28 @@ export const DestinationForm: React.FC<DestinationFormProps> = ({ onGenerate, is
         setStops(stops.map(s => s.id === id ? { ...s, ...updates } : s));
     };
 
+    const parseDateTime = (dateStr: string, timeStr: string) => {
+        if (!dateStr || !timeStr) return null;
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const timeMatch = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (!timeMatch) return new Date(dateStr); // Fallback
+
+        let [_, hours, minutes, meridiem] = timeMatch;
+        let h = parseInt(hours, 10);
+        const m = parseInt(minutes, 10);
+
+        if (meridiem.toUpperCase() === 'PM' && h < 12) h += 12;
+        if (meridiem.toUpperCase() === 'AM' && h === 12) h = 0;
+
+        return new Date(year, month - 1, day, h, m);
+    };
+
     const validation = useMemo(() => {
         const hasCities = stops.every(s => s.municipality.trim() !== '');
         const datesValid = stops.every(s => {
-            const arr = new Date(`${s.arrivalDate} ${s.arrivalTime}`);
-            const dep = new Date(`${s.departureDate} ${s.departureTime}`);
+            const arr = parseDateTime(s.arrivalDate, s.arrivalTime);
+            const dep = parseDateTime(s.departureDate, s.departureTime);
+            if (!arr || !dep) return false;
             return dep > arr;
         });
         return { hasCities, datesValid };
@@ -227,8 +244,8 @@ export const DestinationForm: React.FC<DestinationFormProps> = ({ onGenerate, is
                                         type="button"
                                         onClick={() => setBudget(b)}
                                         className={`flex-1 py-3 px-2 rounded-xl text-xs font-bold transition-all ${budget === b
-                                                ? 'bg-gradient-to-r from-teal-400 to-teal-500 text-white shadow-lg shadow-teal-500/30'
-                                                : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                            ? 'bg-gradient-to-r from-teal-400 to-teal-500 text-white shadow-lg shadow-teal-500/30'
+                                            : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                                             }`}
                                     >
                                         {t[b + 'Friendly'] || b}
